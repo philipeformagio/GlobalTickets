@@ -41,3 +41,15 @@
 @section Widget {
 
 }
+
+@section Scripts{
+    <script>
+        const selectedCategoryOnChangeHandler = (selectedCategory) => {
+            const htmlElement = selectedCategory.target;
+            const selectedValue = htmlElement.value;
+            console.log(selectedValue);
+        }
+        const selectedCategory = document.getElementById("SelectedCategory");
+        selectedCategory.addEventListener("change", selectedCategoryOnChangeHandler.bind(selectedCategory));
+    </script>
+}
