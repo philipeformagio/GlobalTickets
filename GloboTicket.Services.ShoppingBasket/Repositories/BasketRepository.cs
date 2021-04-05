@@ -19,14 +19,15 @@ namespace GloboTicket.Services.ShoppingBasket.Repositories
 
         public async Task<Basket> GetBasketById(Guid basketId)
         {
-            return await _shoppingBasketDbContext.Baskets.Include(sb => sb.BasketLines)
-                .Where(b => b.BasketId == basketId).FirstOrDefaultAsync();
+            return await _shoppingBasketDbContext.Baskets
+                                                 .Include(sb => sb.BasketLines)
+                                                 .Where(b => b.BasketId == basketId).FirstOrDefaultAsync();
         }
 
         public async Task<bool> BasketExists(Guid basketId)
         {
             return await _shoppingBasketDbContext.Baskets
-                .AnyAsync(b => b.BasketId == basketId);
+                                                 .AnyAsync(b => b.BasketId == basketId);
         }
 
         public void AddBasket(Basket basket)
