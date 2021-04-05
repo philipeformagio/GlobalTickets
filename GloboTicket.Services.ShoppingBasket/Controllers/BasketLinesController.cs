@@ -61,8 +61,7 @@ namespace GloboTicket.Services.ShoppingBasket.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BasketLine>> Post(Guid basketId, 
-            [FromBody] BasketLineForCreation basketLineForCreation)
+        public async Task<ActionResult<BasketLine>> Post(Guid basketId, [FromBody] BasketLineForCreation basketLineForCreation)
         {
             if (!await _basketRepository.BasketExists(basketId))
             {
