@@ -36,7 +36,8 @@ namespace GloboTicket.Services.ShoppingBasket.Repositories
         {
             var existingLine = await _shoppingBasketDbContext.BasketLines
                                                              .Include(bl => bl.Event)
-                                                             .Where(b => b.BasketId == basketId && b.EventId == basketLine.EventId).FirstOrDefaultAsync();
+                                                             .Where(b => b.BasketId == basketId && b.EventId == basketLine.EventId)
+                                                             .FirstOrDefaultAsync();
             if (existingLine == null)
             {
                 basketLine.BasketId = basketId;
