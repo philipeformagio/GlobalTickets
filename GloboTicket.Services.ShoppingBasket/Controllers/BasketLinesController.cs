@@ -89,9 +89,7 @@ namespace GloboTicket.Services.ShoppingBasket.Controllers
         } 
 
         [HttpPut("{basketLineId}")]
-        public async Task<ActionResult<BasketLine>> Put(Guid basketId, 
-            Guid basketLineId, 
-            [FromBody] BasketLineForUpdate basketLineForUpdate)
+        public async Task<ActionResult<BasketLine>> Put(Guid basketId, Guid basketLineId, [FromBody] BasketLineForUpdate basketLineForUpdate)
         {
             if (!await _basketRepository.BasketExists(basketId))
             {
