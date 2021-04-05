@@ -47,7 +47,9 @@
         const selectedCategoryOnChangeHandler = (selectedCategory) => {
             const htmlElement = selectedCategory.target;
             const selectedValue = htmlElement.value;
+            const selectedText = htmlElement.options[htmlElement.selectedIndex].text;
             console.log(selectedValue);
+            console.log(selectedText);
         }
 
         const selectedCategory = document.getElementById("SelectedCategory");
