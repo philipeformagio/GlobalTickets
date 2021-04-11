@@ -20,8 +20,8 @@ namespace GloboTicket.Services.ShoppingBasket.Controllers
         private readonly IMapper _mapper;
 
         public BasketLinesController(IBasketRepository basketRepository, 
-            IBasketLinesRepository basketLinesRepository, IEventRepository eventRepository, 
-            IEventCatalogService eventCatalogService, IMapper mapper)
+                                     IBasketLinesRepository basketLinesRepository, IEventRepository eventRepository, 
+                                     IEventCatalogService eventCatalogService, IMapper mapper)
         {
             _basketRepository = basketRepository;
             _basketLinesRepository = basketLinesRepository;
@@ -43,8 +43,7 @@ namespace GloboTicket.Services.ShoppingBasket.Controllers
         }
 
         [HttpGet("{basketLineId}", Name = "GetBasketLine")]
-        public async Task<ActionResult<BasketLine>> Get(Guid basketId, 
-            Guid basketLineId)
+        public async Task<ActionResult<BasketLine>> Get(Guid basketId, Guid basketLineId)
         {
             if (!await _basketRepository.BasketExists(basketId))
             {
@@ -115,8 +114,7 @@ namespace GloboTicket.Services.ShoppingBasket.Controllers
         } 
 
         [HttpDelete("{basketLineId}")]
-        public async Task<IActionResult> Delete(Guid basketId, 
-            Guid basketLineId)
+        public async Task<IActionResult> Delete(Guid basketId, Guid basketLineId)
         {
             if (!await _basketRepository.BasketExists(basketId))
             {
