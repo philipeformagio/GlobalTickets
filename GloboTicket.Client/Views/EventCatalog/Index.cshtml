@@ -1,9 +1,7 @@
 ﻿@model GloboTicket.Web.Models.View.EventListModel
 
 @{
-    var categoryListItems = Model.Categories.Select(c =>
-        new SelectListItem { Value = c.CategoryId.ToString(), Text = c.Name }
-    ).ToList();
+    var categoryListItems = Model.Categories.Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.Name }).ToList();
     categoryListItems.Insert(0, new SelectListItem { Text = "All" });
 }
 
