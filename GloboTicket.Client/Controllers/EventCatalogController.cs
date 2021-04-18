@@ -14,14 +14,17 @@ namespace GloboTicket.Web.Controllers
     {
         private readonly Events.EventsClient eventCatalogService_gRPC;
         private readonly IEventCatalogService eventCatalogService;
+        private readonly IShoppingBasketService shoppingBasketService;
         private readonly Settings settings;
 
         public EventCatalogController(Events.EventsClient eventCatalogService_gRPC,
                                       IEventCatalogService eventCatalogService, 
+                                      IShoppingBasketService shoppingBasketService,
                                       Settings settings)
         {
             this.eventCatalogService_gRPC = eventCatalogService_gRPC;
             this.eventCatalogService = eventCatalogService;
+            this.shoppingBasketService = shoppingBasketService;
             this.settings = settings;
         }
 
@@ -40,18 +43,23 @@ namespace GloboTicket.Web.Controllers
             //        SelectedCategory = categoryId
             //    }
             //);
+            var currentBasketId = Request.Cookies.GetCurrentBasketId(settings);
+            var getBasket = currentBasketId == Guid.Empty ? Task.FromResult<Basket>(null) : shoppingBasketService.GetBasket(currentBasketId);
 
             var getCategories = eventCatalogService_gRPC.GetAllCategoriesAsync(new GetAllCategoriesRequest());
             var getEvents = categoryId == Guid.Empty ? eventCatalogService_gRPC.GetAllAsync(new GetAllEventsRequest()) :
                                                        eventCatalogService_gRPC.GetAllByCategoryIdAsync(new GetAllEventsByCategoryIdRequest { CategoryId = categoryId.ToString() });
-            await Task.WhenAll(new Task[] { getCategories.ResponseAsync, getEvents.ResponseAsync });
+            await Task.WhenAll(new Task[] { getCategories.ResponseAsync, getEvents.ResponseAsync, getBasket });
+
+            var numberOfItems = getBasket.Result == null ? 0 : getBasket.Result.NumberOfItems;
 
             return View(
                 new EventListModel
                 {
                     Events = getEvents.ResponseAsync.Result.Events,
                     Categories = getCategories.ResponseAsync.Result.Categories,
-                    SelectedCategory = categoryId
+                    SelectedCategory = categoryId,
+                    NumberOfItems = numberOfItems
                 }
             );
         }
@@ -64,6 +72,10 @@ namespace GloboTicket.Web.Controllers
 
         public async Task<IActionResult> Detail(Guid eventId)
         {
+            var currentBasketId = Request.Cookies.GetCurrentBasketId(settings);
+            var getBasket = currentBasketId == Guid.Empty ? Task.FromResult<Basket>(null) : shoppingBasketService.GetBasket(currentBasketId);
+            await Task.WhenAll(new Task[] { getBasket });
+            ViewBag.NumberOfItems = getBasket.Result == null ? 0 : getBasket.Result.NumberOfItems;
             //var ev = await eventCatalogService.GetEvent(eventId);
             //return View(ev);
             var ev = await eventCatalogService_gRPC.GetByEventIdAsync(new GetByEventIdRequest { EventId = eventId.ToString() });
