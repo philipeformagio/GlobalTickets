@@ -19,6 +19,8 @@ namespace GloboTickets.Services.Payment
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            Console.WriteLine("Payment service has started.");
+
             var storageAccount = CloudStorageAccount.Parse(_config["AzureQueues:ConnectionString"]);
 
             using var activator = new BuiltinHandlerActivator();

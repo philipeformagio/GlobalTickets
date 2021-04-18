@@ -9,7 +9,9 @@ namespace GloboTickets.Services.Payment
     {
         public Task Handle(PaymentRequestMessage message)
         {
-            Console.WriteLine($"Payment request received for basket id {message.BasketId}.");
+            // Ex.: Pay and send an email
+            Console.WriteLine($"Payment request received for basket id {message.BasketId}, user id {message.UserId} " +
+                $"and the total price of the transaction is {message.TotalPrice}.");
             return Task.CompletedTask;
         }
     }
