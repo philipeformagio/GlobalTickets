@@ -19,7 +19,7 @@ namespace GloboTickets.Services.Payment
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var storageAccount = CloudStorageAccount.Parse(_config["AzureQueues:Connection"]);
+            var storageAccount = CloudStorageAccount.Parse(_config["AzureQueues:ConnectionString"]);
 
             using var activator = new BuiltinHandlerActivator();
             activator.Register(() => new NewOrderHandler());

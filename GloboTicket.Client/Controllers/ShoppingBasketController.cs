@@ -1,11 +1,12 @@
-﻿using GloboTicket.Web.Extensions;
+﻿using GloboTicket.Messages;
+using GloboTicket.Web.Extensions;
 using GloboTicket.Web.Models;
 using GloboTicket.Web.Models.Api;
 using GloboTicket.Web.Models.View;
 using GloboTicket.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using Rebus.Bus;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,10 +16,12 @@ namespace GloboTicket.Web.Controllers
     {
         private readonly IShoppingBasketService basketService;
         private readonly Settings settings;
-        public ShoppingBasketController(IShoppingBasketService basketService, Settings settings)
+        private readonly IBus bus;
+        public ShoppingBasketController(IShoppingBasketService basketService, IBus bus, Settings settings)
         {
             this.basketService = basketService;
             this.settings = settings;
+            this.bus = bus;
         }
 
         public async Task<IActionResult> Index()
@@ -62,6 +65,13 @@ namespace GloboTicket.Web.Controllers
             var basketId = Request.Cookies.GetCurrentBasketId(settings);
             await basketService.RemoveLine(basketId, lineId);
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Pay()
+        {
+            var basketId = Request.Cookies.GetCurrentBasketId(settings);
+            await bus.Send(new PaymentRequestMessage { BasketId = basketId });
+            return View("Thanks");
         }
     }
 }

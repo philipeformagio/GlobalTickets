@@ -73,9 +73,10 @@ namespace GloboTicket.Web.Controllers
         public async Task<IActionResult> Detail(Guid eventId)
         {
             var currentBasketId = Request.Cookies.GetCurrentBasketId(settings);
-            var getBasket = currentBasketId == Guid.Empty ? Task.FromResult<Basket>(null) : shoppingBasketService.GetBasket(currentBasketId);
-            await Task.WhenAll(new Task[] { getBasket });
-            ViewBag.NumberOfItems = getBasket.Result == null ? 0 : getBasket.Result.NumberOfItems;
+            //var getBasket = currentBasketId == Guid.Empty ? Task.FromResult<Basket>(null) : shoppingBasketService.GetBasket(currentBasketId);
+            //await Task.WhenAll(new Task[] { getBasket });
+            var getBasket = currentBasketId == Guid.Empty ? new Basket() : await shoppingBasketService.GetBasket(currentBasketId);
+            ViewBag.NumberOfItems = getBasket == null ? 0 : getBasket.NumberOfItems;
             //var ev = await eventCatalogService.GetEvent(eventId);
             //return View(ev);
             var ev = await eventCatalogService_gRPC.GetByEventIdAsync(new GetByEventIdRequest { EventId = eventId.ToString() });
