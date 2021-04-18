@@ -31,6 +31,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GloboTicket.Messages\GloboTicket.Messages.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Protobuf Include="..\eventcatalog.proto" GrpcServices="Client">
       <Link>Protos\eventcatalog.proto</Link>
     </Protobuf>
