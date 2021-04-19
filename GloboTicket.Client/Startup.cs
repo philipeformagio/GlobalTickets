@@ -44,7 +44,6 @@ namespace GloboTicket.Web
             services.AddSingleton<Settings>();
             
             var storageAccount = CloudStorageAccount.Parse(config["AzureQueues:ConnectionString"]);
-
             services.AddRebus(c => c
                 .Transport(t => t.UseAzureStorageQueuesAsOneWayClient(storageAccount))
                 .Routing(r => r.TypeBased().Map<PaymentRequestMessage>(
